@@ -48,7 +48,7 @@ export default function ProductCard({ product }) {
         <div className="relative aspect-[4/3] bg-surface-900 overflow-hidden">
           {images && images.length > 0 ? (
             <Image 
-              src={images[0]} 
+              src={images[0]?.url || (typeof images[0] === 'string' ? images[0] : 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800')} 
               alt={name} 
               fill 
               className="object-cover transition-transform duration-500 group-hover:scale-105" 
@@ -75,7 +75,7 @@ export default function ProductCard({ product }) {
         <div className="p-5 flex flex-col flex-grow">
           {category && (
             <div className="text-xs text-accent uppercase tracking-wider font-semibold mb-2">
-              {category}
+              {typeof category === 'object' ? category.name : category}
             </div>
           )}
           

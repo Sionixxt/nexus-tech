@@ -47,9 +47,9 @@ export default function ProductFilters({ categories = [], onFilterChange }) {
         <section>
           <h3 className="text-sm font-semibold text-white/40 uppercase tracking-wider mb-4">Categories</h3>
           <div className="space-y-2">
-            {categories.map((cat) => (
+            {(Array.isArray(categories) ? categories : (categories?.categories || [])).map((cat) => (
               <button
-                key={cat.id}
+                key={cat.id || cat.slug}
                 onClick={() => handleCategoryChange(cat.slug)}
                 className={`w-full text-left px-3 py-2 rounded-lg transition-colors flex justify-between items-center ${
                   filters.category === cat.slug 
@@ -58,7 +58,9 @@ export default function ProductFilters({ categories = [], onFilterChange }) {
                 }`}
               >
                 <span>{cat.name}</span>
-                {cat._count && <span className="text-xs text-white/30">{cat._count}</span>}
+                {cat._count?.products !== undefined && (
+                  <span className="text-xs text-white/30">{cat._count.products}</span>
+                )}
               </button>
             ))}
           </div>

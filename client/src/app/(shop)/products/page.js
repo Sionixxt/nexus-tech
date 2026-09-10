@@ -19,7 +19,9 @@ export default function ProductsPage() {
   const debouncedSearch = useDebounce(search, 500);
 
   useEffect(() => {
-    api.get('/products/categories').then(res => setCategories(res.data)).catch(console.error);
+    api.get('/products/categories')
+      .then(res => setCategories(res.data?.categories || res.data || []))
+      .catch(console.error);
   }, []);
 
   useEffect(() => {
@@ -29,8 +31,8 @@ export default function ProductsPage() {
         const res = await api.get('/products', {
           params: { ...filters, search: debouncedSearch, page, limit: 12 }
         });
-        setProducts(res.data.products || []);
-        setTotal(res.data.total || 0);
+        setProducts(res.data?.products || []);
+        setTotal(res.data?.pagination?.total || res.data?.total || (res.data?.products?.length || 0));
       } catch (err) {
         console.error(err);
       } finally {
