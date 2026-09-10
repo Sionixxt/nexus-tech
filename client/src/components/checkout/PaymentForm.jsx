@@ -131,3 +131,5 @@ export default function PaymentForm({ total = 0, onPaymentComplete, isProcessing
     </div>
   );
 }
+
+export { PaymentForm };

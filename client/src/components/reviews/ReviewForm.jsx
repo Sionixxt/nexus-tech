@@ -129,3 +129,5 @@ export default function ReviewForm({ productId, onSubmit }) {
     </div>
   );
 }
+
+export { ReviewForm };

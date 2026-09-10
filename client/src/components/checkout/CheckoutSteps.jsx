@@ -57,3 +57,5 @@ export default function CheckoutSteps({ currentStep = 1, steps = ['Shipping Info
     </div>
   );
 }
+
+export { CheckoutSteps };

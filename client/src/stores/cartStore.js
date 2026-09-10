@@ -42,6 +42,7 @@ export const useCartStore = create((set, get) => ({
       toast.success(`${product.name} added to cart`);
     }
   },
+  addToCart: (product, quantity = 1) => get().addItem(product, quantity),
 
   // ── Remove item ───────────────────────────────────────────────────────
   removeItem: (productId) => {
@@ -87,5 +88,8 @@ export const useCartStore = create((set, get) => ({
   },
 
   getItemCount: () =>
+    get().items.reduce((sum, i) => sum + i.quantity, 0),
+
+  getTotalItems: () =>
     get().items.reduce((sum, i) => sum + i.quantity, 0),
 }));

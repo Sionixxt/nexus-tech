@@ -139,3 +139,5 @@ export default function Navbar() {
     </nav>
   );
 }
+
+export { Navbar };

@@ -63,4 +63,5 @@ const StarRating = ({ rating, maxStars = 5, interactive = false, onRate, size = 
   );
 };
 
+export { StarRating };
 export default StarRating;

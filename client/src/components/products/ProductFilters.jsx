@@ -123,3 +123,5 @@ export default function ProductFilters({ categories = [], onFilterChange }) {
     </div>
   );
 }
+
+export { ProductFilters };

@@ -65,3 +65,5 @@ export default function CartSummary() {
     </div>
   );
 }
+
+export { CartSummary };

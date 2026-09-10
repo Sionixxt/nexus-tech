@@ -76,3 +76,5 @@ export default function CartItem({ item }) {
     </div>
   );
 }
+
+export { CartItem };

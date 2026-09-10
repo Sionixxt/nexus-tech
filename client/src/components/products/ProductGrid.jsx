@@ -44,3 +44,5 @@ export default function ProductGrid({ products, isLoading, emptyMessage = 'No pr
     </div>
   );
 }
+
+export { ProductGrid };

@@ -89,3 +89,5 @@ export default function Sidebar() {
     </aside>
   );
 }
+
+export { Sidebar };

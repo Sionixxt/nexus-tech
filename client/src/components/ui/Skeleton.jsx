@@ -38,4 +38,5 @@ const Skeleton = ({ variant = 'text', className }) => {
   return <div className={clsx(baseClass, variants[variant], className)} />;
 };
 
+export { Skeleton };
 export default Skeleton;

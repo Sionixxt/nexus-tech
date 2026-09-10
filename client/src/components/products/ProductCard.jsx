@@ -110,3 +110,5 @@ export default function ProductCard({ product }) {
     </Link>
   );
 }
+
+export { ProductCard };

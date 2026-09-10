@@ -56,3 +56,5 @@ export default function SearchBar() {
     </div>
   );
 }
+
+export { SearchBar };
