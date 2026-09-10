@@ -57,7 +57,7 @@ services:
     startCommand: npm start
     envVars:
       - key: NEXT_PUBLIC_API_URL
-        value: "https://nexustech-api.onrender.com/api"
+        value: "https://nexustech-api-2zxm.onrender.com/api"
         # ⬆ Update this after the API service is deployed with the actual URL
       - key: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
         value: "pk_test_placeholder"
