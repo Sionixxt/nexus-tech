@@ -15,8 +15,9 @@ import { Button } from '@/components/ui/Button';
 
 export default function CheckoutPage() {
   const { user } = useAuth({ required: true });
-  const { items, clearCart } = useCartStore();
+  const { items, clearCart, getTotal } = useCartStore();
   const router = useRouter();
+  const total = typeof getTotal === 'function' ? (getTotal() || 0) : 0;
   
   const [step, setStep] = useState(1);
   const [shippingInfo, setShippingInfo] = useState({ name: '', street: '', city: '', state: '', zip: '', country: '' });
@@ -116,7 +117,7 @@ export default function CheckoutPage() {
             {step === 3 && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
                 <h2 className="text-xl font-bold text-white mb-4">Payment</h2>
-                <PaymentForm onSubmit={handleCompletePayment} />
+                <PaymentForm total={total} onPaymentComplete={handleCompletePayment} onSubmit={handleCompletePayment} />
                 <Button variant="outline" onClick={() => setStep(2)} className="w-full mt-4">Back to Delivery</Button>
               </motion.div>
             )}

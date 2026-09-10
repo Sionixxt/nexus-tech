@@ -88,9 +88,9 @@ export default function ProductCard({ product }) {
           </div>
           
           <div className="flex items-end gap-2 mb-4 mt-auto">
-            <span className="text-xl font-bold gradient-text">${price.toFixed(2)}</span>
+            <span className="text-xl font-bold gradient-text">${(Number(price) || 0).toFixed(2)}</span>
             {compareAt && compareAt > price && (
-              <span className="text-white/30 line-through text-sm mb-1">${compareAt.toFixed(2)}</span>
+              <span className="text-white/30 line-through text-sm mb-1">${(Number(compareAt) || 0).toFixed(2)}</span>
             )}
           </div>
 

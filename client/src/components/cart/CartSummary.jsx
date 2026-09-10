@@ -4,17 +4,18 @@ import Link from 'next/link';
 import { useCartStore } from '@/stores/cartStore';
 
 export default function CartSummary() {
-  const { items, subtotal } = useCartStore();
+  const { items = [], getSubtotal, getTax, getShipping, getTotal } = useCartStore();
 
-  const taxRate = 0.08;
-  const tax = subtotal * taxRate;
-  
+  const subtotal = typeof getSubtotal === 'function' 
+    ? (getSubtotal() || 0) 
+    : (items || []).reduce((acc, i) => acc + (Number(i.price) || 0) * (Number(i.quantity) || 1), 0);
+
+  const tax = typeof getTax === 'function' ? (getTax() || 0) : parseFloat((subtotal * 0.08).toFixed(2));
   const isFreeShipping = subtotal >= 500;
-  const shipping = isFreeShipping ? 0 : 25;
-  
-  const total = subtotal + tax + shipping;
-  const amountForFreeShipping = 500 - subtotal;
-  const isCartEmpty = items.length === 0;
+  const shipping = typeof getShipping === 'function' ? (getShipping() || 0) : (subtotal === 0 ? 0 : (isFreeShipping ? 0 : 9.99));
+  const total = typeof getTotal === 'function' ? (getTotal() || 0) : parseFloat((subtotal + tax + shipping).toFixed(2));
+  const amountForFreeShipping = Math.max(0, 500 - subtotal);
+  const isCartEmpty = !items || items.length === 0;
 
   return (
     <div className="glass rounded-2xl p-6">

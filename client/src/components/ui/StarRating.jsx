@@ -57,7 +57,7 @@ const StarRating = ({ rating, maxStars = 5, interactive = false, onRate, size = 
         })}
       </div>
       <span className={clsx("text-white/70 font-medium", size === 'sm' ? 'text-xs' : 'text-sm')}>
-        {rating.toFixed(1)}
+        {(Number(rating) || 0).toFixed(1)}
       </span>
     </div>
   );

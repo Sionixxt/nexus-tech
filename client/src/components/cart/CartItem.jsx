@@ -35,7 +35,7 @@ export default function CartItem({ item }) {
           {name}
         </Link>
         <div className="text-primary-400 font-semibold mt-1">
-          ${price.toFixed(2)}
+          ${(Number(price) || 0).toFixed(2)}
         </div>
       </div>
 
@@ -60,7 +60,7 @@ export default function CartItem({ item }) {
 
         <div className="flex items-center gap-6">
           <div className="text-right hidden sm:block w-20 font-bold text-white">
-            ${(price * quantity).toFixed(2)}
+            ${((Number(price) || 0) * (Number(quantity) || 1)).toFixed(2)}
           </div>
           <button 
             onClick={() => removeItem(productId)}

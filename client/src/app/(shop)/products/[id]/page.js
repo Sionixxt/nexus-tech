@@ -74,9 +74,9 @@ export default function ProductDetailPage({ params }) {
           </div>
           
           <div className="mb-8">
-            <span className="text-4xl font-bold gradient-text">${product.price.toFixed(2)}</span>
+            <span className="text-4xl font-bold gradient-text">${(Number(product.price) || 0).toFixed(2)}</span>
             {product.compareAtPrice && (
-              <span className="text-surface-500 line-through ml-4 text-xl">${product.compareAtPrice.toFixed(2)}</span>
+              <span className="text-surface-500 line-through ml-4 text-xl">${(Number(product.compareAtPrice) || 0).toFixed(2)}</span>
             )}
           </div>
 

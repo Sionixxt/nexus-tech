@@ -59,7 +59,7 @@ export default function AdminProductsPage() {
                     </td>
                     <td className="py-3 text-white font-medium">{product.name}</td>
                     <td className="py-3 text-surface-400 font-mono">{product.sku}</td>
-                    <td className="py-3 text-white">${product.price.toFixed(2)}</td>
+                    <td className="py-3 text-white">${(Number(product.price) || 0).toFixed(2)}</td>
                     <td className="py-3 text-surface-300">{product.stock}</td>
                     <td className="py-3 text-surface-300">{product.category}</td>
                     <td className="py-3">

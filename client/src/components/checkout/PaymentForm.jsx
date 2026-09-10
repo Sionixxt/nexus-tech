@@ -14,7 +14,7 @@ const Input = ({ label, ...props }) => (
   </div>
 );
 
-export default function PaymentForm({ total = 0, onPaymentComplete, isProcessing = false }) {
+export default function PaymentForm({ total = 0, onPaymentComplete, onSubmit, isProcessing = false }) {
   const [localProcessing, setLocalProcessing] = useState(false);
   const [formData, setFormData] = useState({
     cardNumber: '',
@@ -34,8 +34,12 @@ export default function PaymentForm({ total = 0, onPaymentComplete, isProcessing
     // Simulate API call
     setTimeout(() => {
       setLocalProcessing(false);
+      const paymentId = 'sim_payment_' + Math.random().toString(36).substring(2, 9);
       if (onPaymentComplete) {
-        onPaymentComplete('sim_payment_' + Math.random().toString(36).substring(2, 9));
+        onPaymentComplete(paymentId);
+      }
+      if (onSubmit) {
+        onSubmit(paymentId);
       }
     }, 2000);
   };
@@ -112,7 +116,7 @@ export default function PaymentForm({ total = 0, onPaymentComplete, isProcessing
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
-              Pay ${total.toFixed(2)}
+              Pay ${(Number(total) || 0).toFixed(2)}
             </>
           )}
         </button>

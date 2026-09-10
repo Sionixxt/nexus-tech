@@ -64,10 +64,9 @@ export default function AdminDashboard() {
                         <tr key={order.id} className="border-b border-surface-800/50 hover:bg-surface-800/20 transition-colors">
                           <td className="py-4 text-white font-mono">{order.id}</td>
                           <td className="py-4 text-surface-300">{order.customerName}</td>
-                          <td className="py-4 text-surface-300">{order.itemsCount}</td>
-                          <td className="py-4 text-white font-medium">${order.total.toFixed(2)}</td>
+                          <td className="py-4 text-white font-medium">${(Number(order.total || order.totalAmount) || 0).toFixed(2)}</td>
                           <td className="py-4"><Badge>{order.status}</Badge></td>
-                          <td className="py-4 text-surface-400">{new Date(order.date).toLocaleDateString()}</td>
+                          <td className="py-4 text-surface-400">{order.date || order.createdAt ? new Date(order.date || order.createdAt).toLocaleDateString() : 'N/A'}</td>
                         </tr>
                       ))}
                     </tbody>

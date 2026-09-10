@@ -76,12 +76,11 @@ export default function AdminOrdersPage() {
                       <div className="text-white font-medium">{order.customerName}</div>
                       <div className="text-surface-400 text-xs">{order.customerEmail}</div>
                     </td>
-                    <td className="py-4 text-surface-300">{order.itemsCount}</td>
-                    <td className="py-4 text-white font-medium">${order.total.toFixed(2)}</td>
+                    <td className="py-4 text-white font-medium">${(Number(order.total || order.totalAmount) || 0).toFixed(2)}</td>
                     <td className="py-4">
                       <Badge className={getStatusColor(order.status)}>{order.status}</Badge>
                     </td>
-                    <td className="py-4 text-surface-400">{new Date(order.date).toLocaleDateString()}</td>
+                    <td className="py-4 text-surface-400">{order.date || order.createdAt ? new Date(order.date || order.createdAt).toLocaleDateString() : 'N/A'}</td>
                     <td className="py-4 text-right" onClick={(e) => e.stopPropagation()}>
                       <select 
                         value={order.status} 
@@ -122,14 +121,14 @@ export default function AdminOrdersPage() {
               <div className="space-y-2">
                 {selectedOrder.items?.map((item, i) => (
                   <div key={i} className="flex justify-between text-sm">
-                    <span>{item.qty}x {item.name}</span>
-                    <span className="text-white">${(item.price * item.qty).toFixed(2)}</span>
+                    <span>{item.qty || item.quantity || 1}x {item.name || item.productName}</span>
+                    <span className="text-white">${((Number(item.price || item.unitPrice) || 0) * (Number(item.qty || item.quantity) || 1)).toFixed(2)}</span>
                   </div>
                 ))}
               </div>
               <div className="flex justify-between mt-4 pt-4 border-t border-surface-800 font-bold text-white text-lg">
                 <span>Total</span>
-                <span>${selectedOrder.total.toFixed(2)}</span>
+                <span>${(Number(selectedOrder.total || selectedOrder.totalAmount) || 0).toFixed(2)}</span>
               </div>
             </div>
           </div>
