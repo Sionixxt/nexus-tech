@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Base Layer ──────────────────────────────────────────────────────────── */
+@layer base {
+  * {
+    @apply border-white/10;
+  }
+
+  body {
+    @apply bg-surface-950 text-gray-100 font-sans antialiased;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-surface-950;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-white/10 rounded-full hover:bg-white/20;
+  }
+
+  /* Selection */
+  ::selection {
+    @apply bg-primary-500/30 text-white;
+  }
+}
+
+/* ── Component Layer ─────────────────────────────────────────────────────── */
+@layer components {
+  /* Glassmorphism card */
+  .glass {
+    @apply bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] shadow-xl;
+  }
+
+  .glass-hover {
+    @apply glass transition-all duration-300
+      hover:bg-white/[0.06] hover:border-white/[0.12] hover:shadow-2xl hover:shadow-primary-500/5;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-400 via-accent to-primary-300;
+  }
+
+  /* Glow effects */
+  .glow-sm {
+    box-shadow: 0 0 15px -3px theme('colors.primary.500 / 0.3');
+  }
+  .glow-md {
+    box-shadow: 0 0 30px -5px theme('colors.primary.500 / 0.4');
+  }
+
+  /* Animated gradient border */
+  .gradient-border {
+    @apply relative;
+  }
+  .gradient-border::before {
+    content: '';
+    @apply absolute inset-0 rounded-[inherit] p-[1px];
+    background: linear-gradient(
+      135deg,
+      theme('colors.primary.500'),
+      theme('colors.accent.DEFAULT'),
+      theme('colors.primary.400')
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .gradient-border:hover::before {
+    opacity: 1;
+  }
+
+  /* Skeleton loading animation */
+  .skeleton {
+    @apply bg-white/[0.06] rounded-lg animate-pulse;
+  }
+
+  /* Page section */
+  .section {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+}
+
+/* ── Utility Layer ───────────────────────────────────────────────────────── */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Hide scrollbar but keep scroll */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}

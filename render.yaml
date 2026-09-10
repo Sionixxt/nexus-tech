@@ -1,0 +1,65 @@
+# ============================================================================
+# NexusTech — Render Blueprint (Infrastructure as Code)
+# Deploy with: Dashboard → New → Blueprint → Connect this repo
+# ============================================================================
+
+databases:
+  - name: nexustech-db
+    plan: free
+    databaseName: nexustech
+    user: nexustech
+
+services:
+  # ── Backend API ──────────────────────────────────────────────────────────
+  - type: web
+    name: nexustech-api
+    runtime: node
+    plan: free
+    rootDir: ./server
+    buildCommand: npm install && npx prisma generate && npx prisma migrate deploy
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: nexustech-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: "15m"
+      - key: JWT_REFRESH_EXPIRES_IN
+        value: "7d"
+      - key: CLIENT_URL
+        fromService:
+          name: nexustech-web
+          type: web
+          property: host
+          # Will be set manually after first deploy — see guide
+      - key: PORT
+        value: "4000"
+      - key: STRIPE_SECRET_KEY
+        value: "sk_test_placeholder"
+      - key: UPLOAD_DIR
+        value: "./uploads"
+
+  # ── Frontend Web ─────────────────────────────────────────────────────────
+  - type: web
+    name: nexustech-web
+    runtime: node
+    plan: free
+    rootDir: ./client
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        value: "https://nexustech-api.onrender.com/api"
+        # ⬆ Update this after the API service is deployed with the actual URL
+      - key: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+        value: "pk_test_placeholder"
+      - key: NODE_ENV
+        value: production
