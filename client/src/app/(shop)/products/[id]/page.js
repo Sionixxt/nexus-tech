@@ -25,8 +25,14 @@ export default function ProductDetailPage({ params }) {
     const fetchProduct = async () => {
       try {
         const res = await api.get(`/products/${params.id}`);
-        setProduct(res.data);
-        setMainImage(res.data.images?.[0] || '');
+        const p = res.data?.product || res.data;
+        setProduct({
+          ...p,
+          rating: res.data?.avgRating ?? p.rating ?? 0,
+          reviewCount: res.data?.reviewCount ?? p.reviewCount ?? 0,
+        });
+        const firstImg = typeof p.images?.[0] === 'string' ? p.images[0] : (p.images?.[0]?.url || '');
+        setMainImage(firstImg);
       } catch (err) {
         toast.error('Product not found');
       } finally {
@@ -38,7 +44,6 @@ export default function ProductDetailPage({ params }) {
 
   const handleAddToCart = () => {
     addToCart(product, quantity);
-    toast.success('Added to cart');
   };
 
   if (loading) return <div className="min-h-screen flex items-center justify-center"><div className="skeleton w-32 h-32 rounded-full"></div></div>;
@@ -52,21 +57,24 @@ export default function ProductDetailPage({ params }) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
         <div className="space-y-4">
           <div className="glass rounded-3xl aspect-square relative overflow-hidden flex items-center justify-center p-8">
-            <Image src={mainImage || '/placeholder.png'} alt={product.name} fill className="object-contain" />
+            <Image src={mainImage || (typeof product.images?.[0] === 'string' ? product.images[0] : (product.images?.[0]?.url || 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800'))} alt={product.name || 'Product'} fill className="object-contain" />
           </div>
           {product.images?.length > 1 && (
             <div className="flex gap-4 overflow-x-auto pb-2">
-              {product.images.map((img, i) => (
-                <button key={i} onClick={() => setMainImage(img)} className={`glass w-24 h-24 shrink-0 rounded-xl relative overflow-hidden ${mainImage === img ? 'ring-2 ring-primary-500' : ''}`}>
-                  <Image src={img} alt={`Thumb ${i}`} fill className="object-cover" />
-                </button>
-              ))}
+              {product.images.map((img, i) => {
+                const imgUrl = typeof img === 'string' ? img : (img?.url || '');
+                return (
+                  <button key={i} onClick={() => setMainImage(imgUrl)} className={`glass w-24 h-24 shrink-0 rounded-xl relative overflow-hidden ${mainImage === imgUrl ? 'ring-2 ring-primary-500' : ''}`}>
+                    <Image src={imgUrl || 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800'} alt={`Thumb ${i}`} fill className="object-cover" />
+                  </button>
+                );
+              })}
             </div>
           )}
         </div>
 
         <div className="flex flex-col">
-          <Badge className="w-fit mb-4">{product.category}</Badge>
+          <Badge className="w-fit mb-4">{product.category?.name || product.category || 'Technology'}</Badge>
           <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">{product.name}</h1>
           <div className="flex items-center gap-4 mb-6">
             <StarRating rating={product.rating} />
@@ -85,12 +93,21 @@ export default function ProductDetailPage({ params }) {
           <div className="glass rounded-2xl p-6 mb-8">
             <h3 className="text-xl font-bold text-white mb-4">Specifications</h3>
             <div className="space-y-3">
-              {Object.entries(product.specs || {}).map(([key, value]) => (
-                <div key={key} className="flex justify-between border-b border-surface-800 pb-2">
-                  <span className="text-surface-400 capitalize">{key}</span>
-                  <span className="text-white font-medium">{value}</span>
-                </div>
-              ))}
+              {Array.isArray(product.specs) ? (
+                product.specs.map((s, i) => (
+                  <div key={s.id || s.key || i} className="flex justify-between border-b border-surface-800 pb-2">
+                    <span className="text-surface-400">{s.key}</span>
+                    <span className="text-white font-medium">{s.value}</span>
+                  </div>
+                ))
+              ) : (
+                Object.entries(product.specs || {}).map(([key, value]) => (
+                  <div key={key} className="flex justify-between border-b border-surface-800 pb-2">
+                    <span className="text-surface-400 capitalize">{key}</span>
+                    <span className="text-white font-medium">{typeof value === 'object' ? JSON.stringify(value) : String(value)}</span>
+                  </div>
+                ))
+              )}
             </div>
           </div>
 

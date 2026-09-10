@@ -24,7 +24,7 @@ export default function CartItem({ item }) {
     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 py-4 border-b border-white/10 last:border-0">
       <Link href={`/products/${slug}`} className="shrink-0 block bg-surface-900 rounded-lg overflow-hidden w-16 h-16 relative">
         {image ? (
-          <Image src={image} alt={name} fill className="object-cover" />
+          <Image src={typeof image === 'string' ? image : (image?.url || 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800')} alt={name || 'Product'} fill className="object-cover" />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-white/20 text-xs">No img</div>
         )}
